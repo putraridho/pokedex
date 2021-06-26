@@ -13,7 +13,7 @@ function Header() {
 			alignItems="center"
 			zIndex={10}
 		>
-			<Image src="pokeball.png" alt="pokéball" height={10} width={10} mr={3} />
+			<Image src="pokeball.png" height={10} width={10} mr={3} />
 			<Heading as="h1" color="white" fontSize="2xl" fontWeight="500">
 				Pokédex
 			</Heading>
