@@ -4,6 +4,8 @@ import { useCallback, useEffect, useState } from "react";
 import Container from "../components/Container";
 import Header from "../components/Header";
 import PokemonList from "../components/PokemonList";
+import PokemonDetails from "../components/PokemonDetails";
+import { PokemonProvider } from "../context/pokemon";
 
 function Home() {
 	const [pokemons, setPokemons] = useState<IPokemonResponse[]>([]);
@@ -31,17 +33,20 @@ function Home() {
 	}, [fetchPokemons, next]);
 
 	return (
-		<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
-			<Header />
-			<Container>
-				<PokemonList
-					pokemons={pokemons}
-					callback={addMorePokemons}
-					hasMore={!!next}
-					isLoading={isLoading}
-				/>
-			</Container>
-		</Box>
+		<PokemonProvider>
+			<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
+				<Header />
+				<Container>
+					<PokemonList
+						pokemons={pokemons}
+						callback={addMorePokemons}
+						hasMore={!!next}
+						isLoading={isLoading}
+					/>
+					<PokemonDetails />
+				</Container>
+			</Box>
+		</PokemonProvider>
 	);
 }
 

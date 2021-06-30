@@ -1,7 +1,8 @@
-import { Box, Heading, ListItem, Progress, Text, UnorderedList } from "@chakra-ui/react";
+import { Box, Heading, Image, ListItem, Progress, Text, UnorderedList } from "@chakra-ui/react";
 import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSpring, animated as a } from "react-spring";
+import { usePokemonContext } from "../context/pokemon";
 import useCardTheme from "../utils/useCardTheme";
 
 interface PokemonCardProps {
@@ -12,6 +13,8 @@ export default function PokemonCard({ url }: PokemonCardProps): React.ReactEleme
 	const [pokemon, setPokemon] = useState<IPokemon | null>(null);
 
 	const theme = useCardTheme(pokemon?.types[0].type.name);
+
+	const { setSelectedPokemon } = usePokemonContext();
 
 	useEffect(() => {
 		(async function () {
@@ -30,8 +33,23 @@ export default function PokemonCard({ url }: PokemonCardProps): React.ReactEleme
 		[theme]
 	);
 
+	const clickHandler = useCallback(() => {
+		setSelectedPokemon(pokemon);
+	}, [pokemon, setSelectedPokemon]);
+
 	return pokemon ? (
-		<PokeBox theme={theme}>
+		<PokeBox theme={theme} onClick={clickHandler}>
+			<Image
+				src="bg-pokeball.png"
+				fallback={<></>}
+				position="absolute"
+				h={(223 / 249) * 100 + "%"}
+				w="auto"
+				bottom={0}
+				left={19}
+				transform={`translateY(${(83 / 223) * 100}%)`}
+			/>
+			<Image src="outline-vector.png" fallback={<></>} position="absolute" bottom="50%" right={8} />
 			<PokeSprite sprites={pokemon.sprites} />
 			<PokeName name={pokemon.name} />
 			<Box position="absolute" zIndex={1} top={6} right={8}>
@@ -72,9 +90,10 @@ function LoadingBox() {
 interface PokeBoxProps {
 	theme: ICardTheme;
 	children: React.ReactNode;
+	onClick: () => void;
 }
 
-function PokeBox({ theme, children }: PokeBoxProps) {
+function PokeBox({ theme, children, onClick }: PokeBoxProps) {
 	const styles = useSpring({
 		backgroundImage: theme.bgGradient,
 	});
@@ -93,30 +112,7 @@ function PokeBox({ theme, children }: PokeBoxProps) {
 				boxShadow: "0 0 0 rgba(0, 0, 0, 0.16)",
 				transform: "translateY(4px)",
 			}}
-			_before={{
-				content: '""',
-				position: "absolute",
-				top: 0,
-				left: 0,
-				h: "100%",
-				w: "100%",
-				backgroundImage: "url(bg-pokeball.png)",
-				backgroundSize: `auto ${(220 / 249) * 100}%`,
-				backgroundRepeat: "no-repeat",
-				backgroundPosition: `19px 380%`,
-			}}
-			_after={{
-				content: '""',
-				position: "absolute",
-				top: 0,
-				left: 0,
-				h: "100%",
-				w: "100%",
-				backgroundImage: "url(outline-vector.png)",
-				backgroundSize: `auto`,
-				backgroundRepeat: "no-repeat",
-				backgroundPosition: `calc(100% - 32px) 50%`,
-			}}
+			onClick={onClick}
 		>
 			<a.div
 				style={{
@@ -142,7 +138,7 @@ interface PokeNameProps {
 
 function PokeName({ name }: PokeNameProps) {
 	return (
-		<Heading position="relative" as="h2" fontSize={24} mb={3}>
+		<Heading position="relative" as="h2" fontSize={24} mb={3} zIndex={1}>
 			{name
 				.split(" ")
 				.map((s) => s[0].toUpperCase() + s.substring(1))
@@ -158,7 +154,7 @@ interface PokeIdProps {
 function PokeId({ id }: PokeIdProps) {
 	return (
 		<Text fontSize={16} fontWeight="medium">
-			#{("00" + id).substr(-3)}
+			#{id < 10 ? "00" + id : id < 100 ? "0" + id : id}
 		</Text>
 	);
 }
@@ -199,16 +195,14 @@ interface IPokeSpriteProps {
 
 function PokeSprite({ sprites }: IPokeSpriteProps) {
 	return (
-		<Box
+		<Image
 			position="absolute"
+			src={sprites.front_default}
+			fallback={<></>}
 			top={0}
 			right={0}
 			h="100%"
-			w="100%"
-			bgImage={sprites.front_default}
-			bgSize="auto 100%"
-			bgRepeat="no-repeat"
-			bgPosition="right top"
+			w="auto"
 			zIndex={1}
 		/>
 	);

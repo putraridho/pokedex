@@ -7,7 +7,7 @@ interface ContainerProps {
 
 function Container({ children }: ContainerProps): React.ReactElement {
 	return (
-		<Grid px={8} pt={5} templateColumns="repeat(2, 1fr)" gap={8} h="100%">
+		<Grid px={8} pt={8} templateColumns="repeat(2, 1fr)" gap={8} h="100%">
 			{children}
 		</Grid>
 	);
