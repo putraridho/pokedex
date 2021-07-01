@@ -136,7 +136,7 @@ interface PokeAboutProps {
 
 function PokeAbout({ pokemon }: PokeAboutProps) {
 	const [species, setSpecies] = useState<IPokemonSpecies>();
-	const [eggGroups, setEggGroups] = useState<any[]>([]);
+	const [eggGroups, setEggGroups] = useState<IPokemonEggGroup[]>([]);
 
 	const speciesName = useMemo<string>(() => {
 		const _name = pokemon.species.name;
@@ -172,7 +172,16 @@ function PokeAbout({ pokemon }: PokeAboutProps) {
 	}, [species]);
 
 	const eggGroupNames = useMemo<string>(() => {
-		return eggGroups.map(({ name }) => name[0].toUpperCase() + name.substr(1)).join(", ") || "-";
+		return (
+			eggGroups
+				.map(({ name }) =>
+					name
+						.split("-")
+						.map((_name) => toCapitalize(_name))
+						.join(" ")
+				)
+				.join(", ") || "-"
+		);
 	}, [eggGroups]);
 
 	const habitat = useMemo<string>(() => {
