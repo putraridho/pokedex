@@ -1,8 +1,3 @@
-interface INamedAPIResource {
-	name: string;
-	url: string;
-}
-
 interface IPokemonResponse extends INamedAPIResource {}
 
 interface IPokemon {
