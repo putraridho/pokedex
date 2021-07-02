@@ -1,5 +1,6 @@
 import { Box, Heading, Image, ListItem, Progress, Text, UnorderedList } from "@chakra-ui/react";
 import axios from "axios";
+import { useRouter } from "next/dist/client/router";
 import React, { useCallback, useEffect, useState } from "react";
 import { useSpring, animated as a } from "react-spring";
 import { usePokemonContext } from "../context/pokemon";
@@ -11,6 +12,7 @@ interface PokemonCardProps {
 
 export default function PokemonCard({ url }: PokemonCardProps): React.ReactElement {
 	const [pokemon, setPokemon] = useState<IPokemon | null>(null);
+	const router = useRouter();
 
 	const theme = useCardTheme(pokemon?.types[0].type.name);
 
@@ -34,8 +36,11 @@ export default function PokemonCard({ url }: PokemonCardProps): React.ReactEleme
 	);
 
 	const clickHandler = useCallback(() => {
-		setSelectedPokemon(pokemon);
-	}, [pokemon, setSelectedPokemon]);
+		if (pokemon) {
+			setSelectedPokemon(pokemon);
+			router.push(`/pokemon?name=${pokemon.name}`, `/pokemon/${pokemon.name}`, { shallow: true });
+		}
+	}, [pokemon, router, setSelectedPokemon]);
 
 	return pokemon ? (
 		<PokeBox theme={theme} onClick={clickHandler}>

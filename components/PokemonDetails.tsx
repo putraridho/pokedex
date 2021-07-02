@@ -1,9 +1,11 @@
 import { Box, Flex, Grid, Heading, Image, Text } from "@chakra-ui/react";
+import axios from "axios";
+import { ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { useSpring, animated as a } from "react-spring";
+import Mars from "./Mars";
+import Venus from "./Venus";
 import { usePokemonContext } from "../context/pokemon";
 import useCardTheme from "../utils/useCardTheme";
-import { useSpring, animated as a } from "react-spring";
-import { ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import axios from "axios";
 import toCapitalize from "../utils/toCapitalize";
 
 function PokemonDetails(): React.ReactElement {
@@ -242,9 +244,13 @@ function Item({ label, value }: ItemProps) {
 			<Text minW="100px" fontSize={16} mr={5} color="primary.100">
 				{label}
 			</Text>
-			<Text fontSize={16} fontWeight="medium" color="primary.500">
-				{value}
-			</Text>
+			{typeof value === "string" || typeof value === "number" ? (
+				<Text fontSize={16} fontWeight="medium" color="primary.500">
+					{value}
+				</Text>
+			) : (
+				value
+			)}
 		</Flex>
 	);
 }
@@ -257,12 +263,16 @@ function Gender({ species }: GenderProps) {
 	return (
 		<Flex>
 			<Flex mr={5}>
-				<Image src="venus.svg" fallback={<></>} mr="10px" />
-				{species ? <Text>{(species.gender_rate / 8) * 100}%</Text> : <Text>-</Text>}
+				<Mars />
+				<Text fontSize={16} fontWeight="medium" color="primary.500" ml="10px">
+					{species ? (species.gender_rate / 8) * 100 + "%" : "-"}
+				</Text>
 			</Flex>
 			<Flex>
-				<Image src="mars.svg" fallback={<></>} mr="10px" />
-				{species ? <Text>{(1 - species.gender_rate / 8) * 100}%</Text> : <Text>-</Text>}
+				<Venus />
+				<Text fontSize={16} fontWeight="medium" color="primary.500" ml="10px">
+					{species ? (1 - species.gender_rate / 8) * 100 + "%" : "-"}
+				</Text>
 			</Flex>
 		</Flex>
 	);

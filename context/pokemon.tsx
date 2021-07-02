@@ -20,6 +20,7 @@ const Context = createContext<IPokemonContext>({
 
 export const PokemonProvider = function ({ children }: { children: ReactNode }) {
 	const [selectedPokemon, setSelectedPokemon] = useState<IPokemon | null>(null);
+
 	const value = useMemo(
 		() => ({
 			selectedPokemon,

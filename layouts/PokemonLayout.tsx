@@ -5,12 +5,17 @@ import Container from "../components/Container";
 import Header from "../components/Header";
 import PokemonList from "../components/PokemonList";
 import PokemonDetails from "../components/PokemonDetails";
-import { PokemonProvider } from "../context/pokemon";
+import { usePokemonContext } from "../context/pokemon";
 
-function Home() {
+interface PokemonLayoutProps {
+	query?: string;
+}
+
+function PokemonLayout({ query }: PokemonLayoutProps) {
 	const [pokemons, setPokemons] = useState<IPokemonResponse[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [next, setNext] = useState<string | null>(null);
+	const { setSelectedPokemon } = usePokemonContext();
 
 	const fetchPokemons = useCallback(async (endpoint: string) => {
 		setIsLoading(true);
@@ -26,6 +31,15 @@ function Home() {
 		fetchPokemons("https://pokeapi.co/api/v2/pokemon");
 	}, [fetchPokemons]);
 
+	useEffect(() => {
+		if (query) {
+			axios("https://pokeapi.co/api/v2/pokemon/" + query).then((res) => {
+				const pokemon = res.data as IPokemon;
+				setSelectedPokemon(pokemon);
+			});
+		}
+	}, [query, setSelectedPokemon]);
+
 	const addMorePokemons = useCallback(() => {
 		if (!next) return;
 
@@ -33,21 +47,19 @@ function Home() {
 	}, [fetchPokemons, next]);
 
 	return (
-		<PokemonProvider>
-			<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
-				<Header />
-				<Container>
-					<PokemonList
-						pokemons={pokemons}
-						callback={addMorePokemons}
-						hasMore={!!next}
-						isLoading={isLoading}
-					/>
-					<PokemonDetails />
-				</Container>
-			</Box>
-		</PokemonProvider>
+		<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
+			<Header />
+			<Container>
+				<PokemonList
+					pokemons={pokemons}
+					callback={addMorePokemons}
+					hasMore={!!next}
+					isLoading={isLoading}
+				/>
+				<PokemonDetails />
+			</Container>
+		</Box>
 	);
 }
 
-export default Home;
+export default PokemonLayout;
