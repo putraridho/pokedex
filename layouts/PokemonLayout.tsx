@@ -2,7 +2,6 @@ import { Box } from "@chakra-ui/react";
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import Container from "../components/Container";
-import Header from "../components/Header";
 import PokemonList from "../components/PokemonList";
 import PokemonDetails from "../components/PokemonDetails";
 import { usePokemonContext } from "../context/pokemon";
@@ -48,7 +47,6 @@ function PokemonLayout({ query }: PokemonLayoutProps) {
 
 	return (
 		<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
-			<Header />
 			<Container>
 				<PokemonList
 					pokemons={pokemons}

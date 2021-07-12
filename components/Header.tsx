@@ -1,4 +1,5 @@
-import { Flex, Heading, Image } from "@chakra-ui/react";
+import { Box, Flex, Heading, Link, Image } from "@chakra-ui/react";
+import NextLink from "next/link";
 
 function Header() {
 	return (
@@ -13,18 +14,28 @@ function Header() {
 			alignItems="center"
 			zIndex={10}
 		>
-			<Image
-				src="pokeball.png"
-				height={10}
-				width={10}
-				mr={3}
-				htmlHeight={40}
-				htmlWidth={40}
-				fallback={<></>}
-			/>
-			<Heading as="h1" color="white" fontSize="2xl" fontWeight="500">
-				Pokédex
-			</Heading>
+			<NextLink href="/pokemon">
+				<Link
+					display="flex"
+					alignItems="center"
+					_hover={{
+						textDecor: "none",
+					}}
+				>
+					<Image
+						src="pokeball.png"
+						height={10}
+						width={10}
+						mr={3}
+						htmlHeight={40}
+						htmlWidth={40}
+						fallback={<Box h={10} w={10} mr={3} />}
+					/>
+					<Heading as="h1" color="white" fontSize="2xl" fontWeight="500">
+						Pokédex
+					</Heading>
+				</Link>
+			</NextLink>
 		</Flex>
 	);
 }

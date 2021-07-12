@@ -1,5 +1,12 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
 
+const global = {
+	body: {
+		width: "100%",
+		overflowX: "hidden",
+	},
+};
+
 const config = {
 	initialColorMode: "light",
 } as ThemeConfig;
@@ -18,6 +25,6 @@ const fonts = {
 	body: "Rubik, sans-serif",
 };
 
-const theme = extendTheme({ config, colors, fonts });
+const theme = extendTheme({ styles: { global }, config, colors, fonts });
 
 export default theme;
