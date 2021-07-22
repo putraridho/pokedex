@@ -1,8 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import axios from "axios";
-import { useRouter } from "next/dist/client/router";
+import Head from "next/head";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import PokemonDetails from "components/PokemonDetails/PokemonDetails";
+import PokemonDetails from "components/PokemonDetails";
 
 interface IStates {
 	pokemon: IPokemon | null;
@@ -23,9 +24,15 @@ function PokemonDetailPage() {
 	}, [query.name]);
 
 	return (
-		<Box pt="60px">
-			<PokemonDetails pokemon={states.pokemon} />
-		</Box>
+		<>
+			<Head>
+				<title>Pokédex - Pokemon API</title>
+				<meta property="og:title" content="Pokedex based on PokeAPI" key="title" />
+			</Head>
+			<Box pt="60px">
+				<PokemonDetails pokemon={states.pokemon} />
+			</Box>
+		</>
 	);
 }
 

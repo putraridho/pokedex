@@ -45,4 +45,4 @@ function PokemonList({
 	);
 }
 
-export default React.memo(PokemonList);
+export default PokemonList;

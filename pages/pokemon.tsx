@@ -1,7 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import axios from "axios";
+import dynamic from "next/dynamic";
+import Head from "next/head";
 import React, { useCallback, useEffect, useState } from "react";
-import PokemonList from "components/PokemonList/PokemonList";
 
 function PokemonPage() {
 	const [states, setStates] = useState<{
@@ -38,15 +39,23 @@ function PokemonPage() {
 		fetchPokemons(states.next);
 	}, [fetchPokemons, states.next]);
 
+	const PokemonList = dynamic(() => import("components/PokemonList"));
+
 	return (
-		<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
-			<PokemonList
-				pokemons={states.pokemons}
-				callback={addMorePokemons}
-				hasMore={!!states.next}
-				isLoading={states.isLoading}
-			/>
-		</Box>
+		<>
+			<Head>
+				<title>Pokédex - Pokemon API</title>
+				<meta property="og:title" content="Pokedex based on PokeAPI" key="title" />
+			</Head>
+			<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
+				<PokemonList
+					pokemons={states.pokemons}
+					callback={addMorePokemons}
+					hasMore={!!states.next}
+					isLoading={states.isLoading}
+				/>
+			</Box>
+		</>
 	);
 }
 

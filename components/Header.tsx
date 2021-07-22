@@ -30,6 +30,7 @@ function Header() {
 						htmlHeight={40}
 						htmlWidth={40}
 						fallback={<Box h={10} w={10} mr={3} />}
+						alt="pokeball"
 					/>
 					<Heading as="h1" color="white" fontSize="2xl" fontWeight="500">
 						Pokédex

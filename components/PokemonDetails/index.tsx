@@ -105,6 +105,7 @@ function PokeSprite({ sprites }: PokeSpriteProps) {
 		>
 			<Image
 				src={sprites.front_default}
+				alt="pokemon front"
 				height="100%"
 				width="auto"
 				maxWidth="none"
