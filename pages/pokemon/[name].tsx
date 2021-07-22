@@ -7,21 +7,49 @@ import PokemonDetails from "components/PokemonDetails";
 
 interface IStates {
 	pokemon: IPokemon | null;
+	prevPokemon: IPokemon | null;
+	nextPokemon: IPokemon | null;
 	isLoading: boolean;
 }
 
 function PokemonDetailPage() {
 	const { query } = useRouter();
-	const [states, setStates] = useState<IStates>({ pokemon: null, isLoading: true });
+	const [states, setStates] = useState<IStates>({
+		pokemon: null,
+		isLoading: true,
+		prevPokemon: null,
+		nextPokemon: null,
+	});
 
 	useEffect(() => {
 		if (query.name) {
 			(async function () {
 				const res = await axios(`https://pokeapi.co/api/v2/pokemon/${query.name}`);
-				setStates({ pokemon: res.data as IPokemon, isLoading: false });
+				setStates((curr) => ({ ...curr, pokemon: res.data as IPokemon, isLoading: false }));
 			})();
 		}
 	}, [query.name]);
+
+	useEffect(() => {
+		if (states.pokemon) {
+			(async function () {
+				try {
+					const res = await axios(`https://pokeapi.co/api/v2/pokemon/${states.pokemon!.id - 1}`);
+					setStates((curr) => ({ ...curr, prevPokemon: res.data as IPokemon }));
+				} catch (err) {
+					setStates((curr) => ({ ...curr, prevPokemon: null }));
+				}
+			})();
+			(async function () {
+				try {
+					const res = await axios(`https://pokeapi.co/api/v2/pokemon/${states.pokemon!.id + 1}`);
+					setStates((curr) => ({ ...curr, nextPokemon: res.data as IPokemon }));
+				} catch (err) {
+					setStates((curr) => ({ ...curr, nextPokemon: null }));
+				}
+			})();
+		}
+	}, [states.pokemon]);
 
 	return (
 		<>
@@ -30,7 +58,7 @@ function PokemonDetailPage() {
 				<meta property="og:title" content="Pokedex based on PokeAPI" key="title" />
 			</Head>
 			<Box pt="60px">
-				<PokemonDetails pokemon={states.pokemon} />
+				<PokemonDetails pokemon={states.pokemon} prev={states.prevPokemon} next={states.nextPokemon} />
 			</Box>
 		</>
 	);
