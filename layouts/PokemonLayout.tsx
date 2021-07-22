@@ -37,7 +37,7 @@ function PokemonLayout({ query }: PokemonLayoutProps) {
 	}, []);
 
 	useEffect(() => {
-		fetchPokemons("https://pokeapi.co/api/v2/pokemon");
+		fetchPokemons("https://pokeapi.co/api/v2/pokemon?limit=12");
 	}, [fetchPokemons]);
 
 	useEffect(() => {
