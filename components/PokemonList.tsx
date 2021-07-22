@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { Box, Button } from "@chakra-ui/react";
 import CardGrid from "./CardGrid";
 import PokemonCard from "./PokemonCard";
@@ -45,4 +45,4 @@ function PokemonList({
 	);
 }
 
-export default PokemonList;
+export default React.memo(PokemonList);

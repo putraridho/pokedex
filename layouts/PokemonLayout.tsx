@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import Container from "../components/Container";
 import PokemonList from "../components/PokemonList";
 import PokemonDetails from "../components/PokemonDetails";
@@ -11,19 +11,29 @@ interface PokemonLayoutProps {
 }
 
 function PokemonLayout({ query }: PokemonLayoutProps) {
-	const [pokemons, setPokemons] = useState<IPokemonResponse[]>([]);
-	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [next, setNext] = useState<string | null>(null);
+	const [states, setStates] = useState<{
+		pokemons: IPokemonResponse[];
+		isLoading: boolean;
+		next: string | null;
+	}>({
+		pokemons: [],
+		isLoading: true,
+		next: null,
+	});
 	const { setSelectedPokemon } = usePokemonContext();
 
 	const fetchPokemons = useCallback(async (endpoint: string) => {
-		setIsLoading(true);
+		setStates((curr) => ({ ...curr, isLoading: true }));
 		const res = await axios(endpoint);
 
 		const { results, next: _next } = res.data;
-		setPokemons((curr) => curr.concat(results));
-		setNext(_next);
-		setIsLoading(false);
+		setStates((curr) => {
+			return {
+				pokemons: curr.pokemons.concat(results),
+				next: _next,
+				isLoading: false,
+			};
+		});
 	}, []);
 
 	useEffect(() => {
@@ -40,19 +50,19 @@ function PokemonLayout({ query }: PokemonLayoutProps) {
 	}, [query, setSelectedPokemon]);
 
 	const addMorePokemons = useCallback(() => {
-		if (!next) return;
+		if (!states.next) return;
 
-		fetchPokemons(next);
-	}, [fetchPokemons, next]);
+		fetchPokemons(states.next);
+	}, [fetchPokemons, states.next]);
 
 	return (
 		<Box pt="60px" minH="100vh" backgroundColor="#f2f2f2">
 			<Container>
 				<PokemonList
-					pokemons={pokemons}
+					pokemons={states.pokemons}
 					callback={addMorePokemons}
-					hasMore={!!next}
-					isLoading={isLoading}
+					hasMore={!!states.next}
+					isLoading={states.isLoading}
 				/>
 				<PokemonDetails />
 			</Container>
@@ -60,4 +70,4 @@ function PokemonLayout({ query }: PokemonLayoutProps) {
 	);
 }
 
-export default PokemonLayout;
+export default memo(PokemonLayout);

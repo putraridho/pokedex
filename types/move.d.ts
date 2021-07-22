@@ -1,0 +1,1 @@
+interface IMoveResponse extends INamedAPIResource {}

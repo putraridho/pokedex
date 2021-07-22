@@ -1,7 +1,7 @@
 import { Box, Heading, Image, ListItem, Progress, Text, UnorderedList } from "@chakra-ui/react";
 import axios from "axios";
 import { useRouter } from "next/dist/client/router";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSpring, animated as a } from "react-spring";
 import { usePokemonContext } from "../context/pokemon";
 import useCardTheme from "../utils/useCardTheme";
@@ -42,30 +42,34 @@ export default function PokemonCard({ url }: PokemonCardProps): React.ReactEleme
 		}
 	}, [pokemon, router, setSelectedPokemon]);
 
-	return pokemon ? (
-		<PokeBox theme={theme} onClick={clickHandler}>
-			<Image
-				src="bg-pokeball.png"
-				fallback={<></>}
-				position="absolute"
-				h={(223 / 249) * 100 + "%"}
-				w="auto"
-				bottom={0}
-				left={19}
-				transform={`translateY(${(83 / 223) * 100}%)`}
-			/>
-			<Image src="outline-vector.png" fallback={<></>} position="absolute" bottom="50%" right={8} />
-			<PokeSprite sprites={pokemon.sprites} />
-			<PokeName name={pokemon.name} />
-			<Box position="absolute" zIndex={1} top={6} right={8}>
-				<PokeId id={pokemon.id} />
-			</Box>
-			<UnorderedList position="relative" zIndex={1} display="flex" listStyleType="none" m={0} p={0}>
-				<PokeTypes types={pokemon.types} onMouseOver={typeMouseOverHandler} />
-			</UnorderedList>
-		</PokeBox>
-	) : (
-		<LoadingBox />
+	return useMemo(
+		() =>
+			pokemon ? (
+				<PokeBox theme={theme} onClick={clickHandler}>
+					<Image
+						src="bg-pokeball.png"
+						fallback={<></>}
+						position="absolute"
+						h={(223 / 249) * 100 + "%"}
+						w="auto"
+						bottom={0}
+						left={19}
+						transform={`translateY(${(83 / 223) * 100}%)`}
+					/>
+					<Image src="outline-vector.png" fallback={<></>} position="absolute" bottom="50%" right={8} />
+					<PokeSprite sprites={pokemon.sprites} />
+					<PokeName name={pokemon.name} />
+					<Box position="absolute" zIndex={1} top={6} right={8}>
+						<PokeId id={pokemon.id} />
+					</Box>
+					<UnorderedList position="relative" zIndex={1} display="flex" listStyleType="none" m={0} p={0}>
+						<PokeTypes types={pokemon.types} onMouseOver={typeMouseOverHandler} />
+					</UnorderedList>
+				</PokeBox>
+			) : (
+				<LoadingBox />
+			),
+		[clickHandler, pokemon, theme, typeMouseOverHandler]
 	);
 }
 
@@ -144,10 +148,7 @@ interface PokeNameProps {
 function PokeName({ name }: PokeNameProps) {
 	return (
 		<Heading position="relative" as="h2" fontSize={24} mb={3} zIndex={1}>
-			{name
-				.split(" ")
-				.map((s) => s[0].toUpperCase() + s.substring(1))
-				.join(" ")}
+			{name[0].toUpperCase() + name.substring(1)}
 		</Heading>
 	);
 }
