@@ -10,11 +10,6 @@ module.exports = {
 				destination: "/pokemon",
 				permanent: false,
 			},
-			{
-				source: "/pokemon/:name",
-				destination: "/pokemon?name=:name",
-				permanent: false,
-			},
 		];
 	},
 };

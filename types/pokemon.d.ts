@@ -42,6 +42,11 @@ interface IPokemonHeldItemVersion {
 }
 
 interface IPokemonMove {
+	move: IMoveResponse;
+	version_group_details: IPokemonMoveVersion;
+}
+
+interface IPokemonMoveVersion {
 	move_learn_method: INamedAPIResource;
 	version_group: INamedAPIResource;
 	level_learned_at: number;

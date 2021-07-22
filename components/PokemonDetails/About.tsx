@@ -1,9 +1,9 @@
 import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
-import toCapitalize from "../utils/toCapitalize";
-import Mars from "./Mars";
-import Venus from "./Venus";
+import toCapitalize from "utils/toCapitalize";
+import Mars from "components/Mars";
+import Venus from "components/Venus";
 
 interface PokeAboutProps {
 	pokemon: IPokemon;

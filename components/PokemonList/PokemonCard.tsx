@@ -3,8 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/dist/client/router";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSpring, animated as a } from "react-spring";
-import { usePokemonContext } from "../context/pokemon";
-import useCardTheme from "../utils/useCardTheme";
+import useCardTheme from "utils/useCardTheme";
 
 interface PokemonCardProps {
 	url: string;
@@ -15,8 +14,6 @@ export default function PokemonCard({ url }: PokemonCardProps): React.ReactEleme
 	const router = useRouter();
 
 	const theme = useCardTheme(pokemon?.types[0].type.name);
-
-	const { setSelectedPokemon } = usePokemonContext();
 
 	useEffect(() => {
 		(async function () {
@@ -37,17 +34,16 @@ export default function PokemonCard({ url }: PokemonCardProps): React.ReactEleme
 
 	const clickHandler = useCallback(() => {
 		if (pokemon) {
-			setSelectedPokemon(pokemon);
-			router.push(`/pokemon?name=${pokemon.name}`, `/pokemon/${pokemon.name}`, { shallow: true });
+			router.push(`/pokemon/${pokemon.name}`);
 		}
-	}, [pokemon, router, setSelectedPokemon]);
+	}, [pokemon, router]);
 
 	return useMemo(
 		() =>
 			pokemon ? (
 				<PokeBox theme={theme} onClick={clickHandler}>
 					<Image
-						src="bg-pokeball.png"
+						src="/bg-pokeball.png"
 						fallback={<></>}
 						position="absolute"
 						h={(223 / 249) * 100 + "%"}
@@ -56,7 +52,7 @@ export default function PokemonCard({ url }: PokemonCardProps): React.ReactEleme
 						left={19}
 						transform={`translateY(${(83 / 223) * 100}%)`}
 					/>
-					<Image src="outline-vector.png" fallback={<></>} position="absolute" bottom="50%" right={8} />
+					<Image src="/outline-vector.png" fallback={<></>} position="absolute" bottom="50%" right={8} />
 					<PokeSprite sprites={pokemon.sprites} />
 					<PokeName name={pokemon.name} />
 					<Box position="absolute" zIndex={1} top={6} right={8}>

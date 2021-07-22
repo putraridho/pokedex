@@ -6,7 +6,7 @@ interface CardGridProps {
 
 function CardGrid({ children }: CardGridProps): React.ReactElement {
 	return (
-		<Grid templateColumns="repeat(2, 1fr)" gap={8}>
+		<Grid templateColumns="repeat(3, 1fr)" gap={8}>
 			{children}
 		</Grid>
 	);

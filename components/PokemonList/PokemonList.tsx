@@ -1,7 +1,7 @@
 import React, { useMemo } from "react";
 import { Box, Button } from "@chakra-ui/react";
-import CardGrid from "./CardGrid";
 import PokemonCard from "./PokemonCard";
+import CardGrid from "./CardGrid";
 
 interface PokemonListProps {
 	pokemons: IPokemonResponse[];
@@ -22,7 +22,7 @@ function PokemonList({
 	);
 
 	return (
-		<Box pb={8}>
+		<Box p={8} maxW="1600px" mx="auto">
 			<CardGrid>{renderPokemons}</CardGrid>
 
 			{hasMore && (

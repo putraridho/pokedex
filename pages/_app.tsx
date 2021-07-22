@@ -2,38 +2,35 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import type { AppProps } from "next/app";
 
-import { PokemonProvider } from "../context/pokemon";
-import theme from "../utils/theme";
+import theme from "utils/theme";
 
 import "@fontsource/rubik/400.css";
 import "@fontsource/rubik/500.css";
 import "@fontsource/rubik/700.css";
-import Header from "../components/Header";
+import Header from "components/Header";
 
 function MyApp({ Component, pageProps, router }: AppProps) {
 	return (
-		<PokemonProvider>
-			<ChakraProvider theme={theme}>
-				<Header />
-				<motion.div
-					key={router.route}
-					initial="initial"
-					animate="animate"
-					variants={{
-						initial: {
-							opacity: 0,
-							transform: "scale(1.1)",
-						},
-						animate: {
-							opacity: 1,
-							transform: "scale(1)",
-						},
-					}}
-				>
-					<Component {...pageProps} />
-				</motion.div>
-			</ChakraProvider>
-		</PokemonProvider>
+		<ChakraProvider theme={theme}>
+			<Header />
+			<motion.div
+				key={router.route}
+				initial="initial"
+				animate="animate"
+				variants={{
+					initial: {
+						opacity: 0,
+						transform: "scale(1.1)",
+					},
+					animate: {
+						opacity: 1,
+						transform: "scale(1)",
+					},
+				}}
+			>
+				<Component {...pageProps} />
+			</motion.div>
+		</ChakraProvider>
 	);
 }
 export default MyApp;

@@ -23,7 +23,7 @@ function Header() {
 					}}
 				>
 					<Image
-						src="pokeball.png"
+						src="/pokeball.png"
 						height={10}
 						width={10}
 						mr={3}
