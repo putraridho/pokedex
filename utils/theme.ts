@@ -1,4 +1,7 @@
 import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import "@fontsource/rubik/400.css";
+import "@fontsource/rubik/500.css";
+import "@fontsource/rubik/700.css";
 
 const global = {
 	body: {

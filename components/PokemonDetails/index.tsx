@@ -133,9 +133,9 @@ function PokeSprite({ sprites }: PokeSpriteProps) {
 			bgRepeat="no-repeat"
 		>
 			<Image
-				src={sprites.front_default}
+				src={sprites.other["official-artwork"].front_default}
 				alt="pokemon front"
-				height="100%"
+				height="90%"
 				width="auto"
 				maxWidth="none"
 				margin="auto"

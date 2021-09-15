@@ -1,13 +1,21 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { motion } from "framer-motion";
 import type { AppProps } from "next/app";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
 import theme from "utils/theme";
 
-import "@fontsource/rubik/400.css";
-import "@fontsource/rubik/500.css";
-import "@fontsource/rubik/700.css";
 import Header from "components/Header";
+
+const queryClient = new QueryClient({
+	defaultOptions: {
+		queries: {
+			refetchOnWindowFocus: false,
+			retry: false,
+		},
+	},
+});
 
 function MyApp({ Component, pageProps, router }: AppProps) {
 	return (
@@ -28,7 +36,10 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 					},
 				}}
 			>
-				<Component {...pageProps} />
+				<QueryClientProvider client={queryClient}>
+					<Component {...pageProps} />
+					<ReactQueryDevtools initialIsOpen={false} />
+				</QueryClientProvider>
 			</motion.div>
 		</ChakraProvider>
 	);
